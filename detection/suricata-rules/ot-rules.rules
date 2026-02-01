@@ -1,0 +1,51 @@
+mkdir detection\suricata-rules -Force
+```
+
+Create `detection/suricata-rules/ot-rules.rules`:
+```
+# =============================================================================
+# OT/ICS Security Lab - Custom Suricata Rules
+# =============================================================================
+# These rules detect common attacks against industrial control systems
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# MODBUS TCP DETECTION RULES
+# -----------------------------------------------------------------------------
+
+# Detect any Modbus traffic (baseline monitoring)
+alert tcp any any -> any 502 (msg:"OT ALERT: Modbus Traffic Detected (Port 502)"; sid:1000001; rev:1;)
+
+# Detect Modbus Write Single Register (Function Code 6)
+# This is commonly used in attacks to modify PLC values
+alert tcp any any -> any 502 (msg:"OT ALERT: Unauthorized Modbus Write Command (FC 06)"; content:"|00 06 01 06|"; sid:1000002; rev:1;)
+
+# Detect Modbus Write Multiple Registers (Function Code 16)
+alert tcp any any -> any 502 (msg:"OT ALERT: Modbus Write Multiple Registers (FC 16)"; content:"|00 10|"; offset:7; depth:2; sid:1000003; rev:1;)
+
+# Detect Modbus Force Single Coil (Function Code 5)
+alert tcp any any -> any 502 (msg:"OT ALERT: Modbus Force Coil Command (FC 05)"; content:"|00 05|"; offset:7; depth:2; sid:1000004; rev:1;)
+
+# Detect new Modbus connections (SYN flag)
+alert tcp any any -> any 502 (msg:"OT ALERT: New Modbus Connection Initiated"; flags:S; sid:1000005; rev:1;)
+
+# -----------------------------------------------------------------------------
+# OPC-UA DETECTION RULES
+# -----------------------------------------------------------------------------
+
+# Detect OPC-UA traffic
+alert tcp any any -> any 4840 (msg:"OT ALERT: OPC-UA Traffic Detected"; sid:1000010; rev:1;)
+
+# -----------------------------------------------------------------------------
+# RECONNAISSANCE DETECTION
+# -----------------------------------------------------------------------------
+
+# Detect port scanning on OT ports
+alert tcp any any -> any 502 (msg:"OT ALERT: Potential Modbus Port Scan"; flags:S; threshold:type threshold, track by_src, count 5, seconds 60; sid:1000020; rev:1;)
+
+# -----------------------------------------------------------------------------
+# ANOMALY DETECTION
+# -----------------------------------------------------------------------------
+
+# Detect connections from unexpected sources (customize source IPs)
+# alert tcp !10.1.0.0/24 any -> 10.2.0.0/24 502 (msg:"OT ALERT: Modbus Connection from Unauthorized Source"; sid:1000030; rev:1;)
