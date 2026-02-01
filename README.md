@@ -57,6 +57,48 @@ This project creates a **simulated industrial control environment** to demonstra
 | Egress Filtering | Control zone denied internet | Prevent data exfiltration |
 | Centralized Logging | VPC Flow Logs + Suricata | Full visibility |
 
+## 🔐 Network Segmentation & Security Policies
+
+To simulate a realistic industrial environment, this lab implements strict **Network Segmentation** based on the **Purdue Enterprise Reference Architecture (PERA)**. The network is divided into three distinct Virtual Private Clouds (VPCs) with granular peering and firewall rules to enforce a **Zero Trust** model.
+
+### 1. The Purdue Model Implementation
+
+| Zone | Purdue Level | VPC CIDR | Security Context |
+| :--- | :--- | :--- | :--- |
+| **Enterprise Zone** | Level 4/5 | `10.0.0.0/24` | **Untrusted/Corporate.** Contains the Jump Host. Simulates the business network. |
+| **Operations Zone** | Level 3 | `10.1.0.0/24` | **DMZ.** Contains the Historian and Security Monitor. Acts as the bridge between IT and OT. |
+| **Control Zone** | Level 1/2 | `10.2.0.0/24` | **Critical/Air-Gapped.** Contains the PLC and HMI. Strictly isolated from the internet and Enterprise zone. |
+
+### 2. Firewall & Traffic Control Policies
+
+We implemented a "Deny-by-Default" strategy, allowing only necessary industrial protocols.
+
+#### 🛡️ Policy A: The "Air-Gap" (Egress Filtering)
+**Objective:** Prevent malware C2 (Command & Control) callbacks and data exfiltration from the critical zone.
+* **Implementation:** The Control Zone (`10.2.0.0/24`) has a high-priority firewall rule denying **all** egress traffic to `0.0.0.0/0` (Internet).
+* **Validation:** Attempts to `curl google.com` or ping external IPs from the PLC fail immediately.
+
+#### 🛡️ Policy B: Prevention of Lateral Movement
+**Objective:** Stop attackers in the Corporate network from directly accessing PLCs.
+* **Implementation:**
+    * **VPC Peering:** Enterprise is peered *only* with Operations. Operations is peered with Control.
+    * **Route Policy:** There is **no route** advertised between Enterprise and Control.
+    * **Firewall Rule:** `deny-enterprise-to-control` explicitly blocks ingress from `10.0.0.0/24` to `10.2.0.0/24`.
+* **Validation:** `nmap` scans from the Jump Host against the PLC return all ports as `filtered`.
+
+#### 🛡️ Policy C: Secure Administration (Bastion Access)
+**Objective:** Allow secure management without exposing ports to the public internet.
+* **Implementation:**
+    * SSH (Port 22) is blocked from the public internet.
+    * Access is only allowed via **Google Cloud Identity-Aware Proxy (IAP)** (`35.235.240.0/20`).
+    * Management traffic must "hop" through the Jump Host to the Historian, and then to the PLC (Pivot architecture).
+
+### 3. Traffic Mirroring Policy
+To enable out-of-band monitoring without disrupting industrial processes, we implemented a **Packet Mirroring Policy**:
+* **Source:** All ingress/egress traffic in the Operations Subnet (`10.1.0.0/24`).
+* **Destination:** An Internal Load Balancer (ILB) front-ending the Suricata IDS.
+* **Result:** The Security Monitor sees real-time traffic (including attacks) without being inline, removing it as a potential point of failure for plant operations.
+
 ## 🔍 Detection Capabilities
 
 The Suricata IDS detects:
@@ -171,6 +213,7 @@ gcloud compute instances stop jump-host historian-server security-monitor plc-si
 
 
 **Built for learning OT/ICS security** | Demonstrates defense-in-depth for industrial environments
+
 
 
 
