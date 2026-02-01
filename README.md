@@ -1,4 +1,4 @@
-# 🏭 ICS Security Lab
+# 🏭 ICS/OT Security Lab
 
 > A comprehensive OT/ICS (Operational Technology / Industrial Control Systems) security lab built on Google Cloud Platform, demonstrating enterprise-grade security practices based on the **Purdue Model** architecture.
 
@@ -159,4 +159,5 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 
 **Built for learning OT/ICS security** | Demonstrates defense-in-depth for industrial environments
+
 
