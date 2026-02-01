@@ -129,6 +129,24 @@ ics-security-lab/
     └── modbus_attack.py        # Attack simulation
 ```
 
+## 🛠️ Tools & Technologies
+
+### Cloud & Infrastructure
+* **Google Cloud Platform (GCP):** Compute Engine, VPC, Cloud NAT, Cloud Logging, Packet Mirroring.
+* **Terraform:** For declarative Infrastructure as Code (IaC) provisioning.
+
+### Security & Detection
+* **Suricata IDS:** Open-source intrusion detection engine configured with custom rules.
+* **Google Cloud Operations Suite:** Stackdriver/Cloud Logging for centralized log aggregation.
+* **Tcpdump:** For packet capture and verification of mirrored traffic.
+* **Nmap:** Used for network reconnaissance and verifying firewall segmentation.
+
+### Simulation & OT Protocols
+* **Python 3:** Core language for all simulation scripts.
+* **Pymodbus:** Library used to create the PLC server, HMI client, and attack scripts.
+* **Modbus TCP:** The primary industrial protocol simulated and analyzed.
+* **Debian Linux:** Operating system for all virtual machines.
+
 ## 📊 Attack Scenarios Tested
 
 | Scenario | Vector | Result |
@@ -159,5 +177,6 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 
 **Built for learning OT/ICS security** | Demonstrates defense-in-depth for industrial environments
+
 
 
