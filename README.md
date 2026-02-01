@@ -169,14 +169,9 @@ gcloud compute instances stop jump-host historian-server security-monitor plc-si
 - [NIST SP 800-82 Guide to ICS Security](https://csrc.nist.gov/publications/detail/sp/800-82/rev-2/final)
 - [Suricata Documentation](https://suricata.readthedocs.io/)
 
-## 📄 License
-
-MIT License - See [LICENSE](LICENSE) for details.
-
----
-
 
 **Built for learning OT/ICS security** | Demonstrates defense-in-depth for industrial environments
+
 
 
 
