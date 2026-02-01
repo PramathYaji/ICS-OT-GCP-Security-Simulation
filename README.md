@@ -27,21 +27,21 @@ This project creates a **simulated industrial control environment** to demonstra
 │   ┌────────────────────────────────────────────────────────────────────────┐   │
 │   │  Jump Host (Bastion) ──────────────────────────────────────────────────│   │
 │   └────────────────────────────────────────────────────────────────────────┘   │
-│                              │                                                 │
+│        (IP= 10.0.0.2)                                                          │                                                 
 │                        VPC Peering                                             │
 │                              ▼                                                 │
 │   LEVEL 3: OPERATIONS ZONE (DMZ)      VPC: operations-vpc (10.1.0.0/24)        │
 │   ┌────────────────────────────────────────────────────────────────────────┐   │
 │   │  Historian Server    │    Security Monitor (Suricata IDS)              │   │
 │   └────────────────────────────────────────────────────────────────────────┘   │
-│                              │                                                 │
+│        (IP= 10.1.0.10)                  (IP= 10.1.0.20)                        │                                                 
 │                        VPC Peering                                             │
 │                              ▼                                                 │
 │   LEVEL 1/2: CONTROL ZONE             VPC: control-vpc (10.2.0.0/24)           │
 │   ┌────────────────────────────────────────────────────────────────────────┐   │
 │   │  PLC Simulator (Modbus TCP)    │    HMI Simulator                      │   │
 │   └────────────────────────────────────────────────────────────────────────┘   │
-│                                                                                │
+│               (IP= 10.2.0.10)             (IP= 10.2.0.20)                      │
 │      KEY SECURITY CONTROL: NO direct path from Enterprise to Control Zone      │
 └────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -159,3 +159,4 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 
 **Built for learning OT/ICS security** | Demonstrates defense-in-depth for industrial environments
+
