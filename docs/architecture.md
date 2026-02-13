@@ -7,35 +7,35 @@ This project implements a **Purdue Model-based network architecture** on Google 
 ## Network Architecture
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                              GCP PROJECT                                         │
+│                              GCP PROJECT                                        │
 ├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                  │
+│                                                                                 │
 │   LEVEL 4/5: ENTERPRISE ZONE                                                    │
-│   ┌────────────────────────────────────────────────────────────────────────┐   │
-│   │  VPC: enterprise-vpc (10.0.0.0/24)                                     │   │
-│   │  └── Jump Host (10.0.0.10) - Bastion/Entry point                       │   │
-│   └────────────────────────────────────────────────────────────────────────┘   │
-│                              │                                                   │
+│   ┌────────────────────────────────────────────────────────────────────────┐    │
+│   │  VPC: enterprise-vpc (10.0.0.0/24)                                     │    │
+│   │  └── Jump Host (10.0.0.10) - Bastion/Entry point                       │    │
+│   └────────────────────────────────────────────────────────────────────────┘    │
+│                              │                                                  │
 │                        VPC Peering                                              │
-│                              │                                                   │
+│                              │                                                  │
 │   LEVEL 3: OPERATIONS ZONE (DMZ)                                                │
-│   ┌────────────────────────────────────────────────────────────────────────┐   │
-│   │  VPC: operations-vpc (10.1.0.0/24)                                     │   │
-│   │  ├── Historian Server (10.1.0.10) - Data collection                    │   │
-│   │  └── Security Monitor (10.1.0.20) - Suricata IDS                       │   │
-│   └────────────────────────────────────────────────────────────────────────┘   │
-│                              │                                                   │
+│   ┌────────────────────────────────────────────────────────────────────────┐    │
+│   │  VPC: operations-vpc (10.1.0.0/24)                                     │    │
+│   │  ├── Historian Server (10.1.0.10) - Data collection                    │    │
+│   │  └── Security Monitor (10.1.0.20) - Suricata IDS                       │    │
+│   └────────────────────────────────────────────────────────────────────────┘    │
+│                              │                                                  │
 │                        VPC Peering                                              │
-│                              │                                                   │
+│                              │                                                  │
 │   LEVEL 1/2: CONTROL ZONE                                                       │
-│   ┌────────────────────────────────────────────────────────────────────────┐   │
-│   │  VPC: control-vpc (10.2.0.0/24)                                        │   │
-│   │  ├── PLC Simulator (10.2.0.10) - Modbus TCP Server                     │   │
-│   │  └── HMI Simulator (10.2.0.20) - Operator Interface                    │   │
-│   └────────────────────────────────────────────────────────────────────────┘   │
-│                                                                                  │
-│   🔒 NO DIRECT PATH: Enterprise → Control (Air-gap enforced)                    │
-│                                                                                  │
+│   ┌────────────────────────────────────────────────────────────────────────┐    │
+│   │  VPC: control-vpc (10.2.0.0/24)                                        │    │
+│   │  ├── PLC Simulator (10.2.0.10) - Modbus TCP Server                     │    │
+│   │  └── HMI Simulator (10.2.0.20) - Operator Interface                    │    │
+│   └────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                 │
+│       NO DIRECT PATH: Enterprise → Control (Air-gap enforced)                   │
+│                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -72,4 +72,5 @@ This project implements a **Purdue Model-based network architecture** on Google 
 | Host | IP Address | Role |
 |------|------------|------|
 | PLC Simulator | 10.2.0.10 | Modbus TCP server (port 502) |
+
 | HMI Simulator | 10.2.0.20 | Operator interface |
