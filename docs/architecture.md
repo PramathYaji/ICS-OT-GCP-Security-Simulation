@@ -7,7 +7,7 @@ This project implements a **Purdue Model-based network architecture** on Google 
 ## Network Architecture
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                              GCP PROJECT                                        │
+│                        Purdue Model-based Architecture                          │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                 │
 │   LEVEL 4/5: ENTERPRISE ZONE                                                    │
@@ -74,3 +74,4 @@ This project implements a **Purdue Model-based network architecture** on Google 
 | PLC Simulator | 10.2.0.10 | Modbus TCP server (port 502) |
 
 | HMI Simulator | 10.2.0.20 | Operator interface |
+
